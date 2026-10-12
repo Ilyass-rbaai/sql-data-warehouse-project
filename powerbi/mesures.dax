@@ -1,0 +1,50 @@
+// Somme des montants de vente ; devise non précisée par la source.
+Chiffre d’affaires = SUM(Ventes[Montant vente])
+
+// Nombre de commandes distinctes.
+Commandes = DISTINCTCOUNT(Ventes[Numéro commande])
+
+// Somme des quantités vendues.
+Unités vendues = SUM(Ventes[Quantité])
+
+// Clients ayant au moins une vente dans le contexte sélectionné.
+Clients actifs = DISTINCTCOUNT(Ventes[Clé client])
+
+// Produits avec au moins une vente dans le contexte sélectionné.
+Produits vendus = DISTINCTCOUNT(Ventes[Clé produit])
+
+// Chiffre d’affaires par commande distincte.
+Panier moyen = DIVIDE([Chiffre d’affaires], [Commandes])
+
+// CA sur les dates équivalentes de l’année précédente.
+CA année précédente = CALCULATE([Chiffre d’affaires], SAMEPERIODLASTYEAR(Calendrier[Date]))
+
+// Variation annuelle affichée uniquement lorsque les deux années sont comprises entre les années de début et de fin de couverture. Le total multiannuel reste vide.
+Évolution CA % = VAR Annee = SELECTEDVALUE(Calendrier[Année])
+VAR PremiereDate = CALCULATE(MIN(Ventes[Date commande]), REMOVEFILTERS())
+VAR DerniereDate = CALCULATE(MAX(Ventes[Date commande]), REMOVEFILTERS())
+RETURN IF(NOT ISBLANK(Annee) && Annee > YEAR(PremiereDate) + 1 && Annee < YEAR(DerniereDate), DIVIDE([Chiffre d’affaires] - [CA année précédente], [CA année précédente]), BLANK())
+
+// Cumul depuis le début de l’année dans le contexte courant.
+CA cumulé annuel = TOTALYTD([Chiffre d’affaires], Calendrier[Date])
+
+// Fréquence de commande dans la période sélectionnée.
+Commandes par client = DIVIDE([Commandes], [Clients actifs])
+
+// Clients avec plus d’une commande dans la période sélectionnée.
+Clients récurrents = COUNTROWS(FILTER(VALUES(Ventes[Clé client]), CALCULATE([Commandes]) > 1))
+
+// Proportion des clients actifs avec plusieurs commandes dans la période sélectionnée.
+Taux de récurrence = DIVIDE([Clients récurrents], [Clients actifs])
+
+// Chiffre d’affaires moyen par client actif.
+CA par client = DIVIDE([Chiffre d’affaires], [Clients actifs])
+
+// CA analysé selon la date d’expédition.
+CA expédié = CALCULATE([Chiffre d’affaires], USERELATIONSHIP(Calendrier[Date], Ventes[Date expédition]))
+
+// Lignes sans date de commande, hors filtre calendrier.
+Lignes sans date = CALCULATE(COUNTROWS(Ventes), REMOVEFILTERS(Calendrier), ISBLANK(Ventes[Date commande]))
+
+// CA inclus dans le total mais non attribuable à une période.
+CA sans date = CALCULATE([Chiffre d’affaires], REMOVEFILTERS(Calendrier), ISBLANK(Ventes[Date commande]))

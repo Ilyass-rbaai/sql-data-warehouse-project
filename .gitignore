@@ -20,3 +20,8 @@ Desktop.ini
 *.bkp
 *.dtmp
 ~$*
+
+# Power BI machine-specific settings and cached data
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+**/.pbi/unappliedChanges.json

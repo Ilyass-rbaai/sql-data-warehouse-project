@@ -1,6 +1,6 @@
 # SQL Sales Data Warehouse
 
-**A SQL Server portfolio project integrating CRM and ERP data into a reporting-ready star schema.**
+**A SQL Server and Power BI portfolio project integrating CRM and ERP data into a sales warehouse and French analytical report.**
 
 This project brings customer, product, and sales data from six CSV files into a layered data warehouse. Raw records are loaded into Bronze, cleaned and standardized in Silver, and exposed through Gold views for business analysis.
 
@@ -14,7 +14,18 @@ Create a consistent sales dataset that connects transactions with customer demog
 - Which products and categories generate the most revenue?
 - How are sales distributed across customers and countries?
 
-These are intended analytical uses of the warehouse; a Power BI dashboard is a planned extension.
+The warehouse is connected to a French Power BI report with sales, product, and customer analysis. The report includes a date dimension, 16 DAX measures, and filters for year, country, and category.
+
+## Power BI report
+
+![Sales overview in Power BI](powerbi/screenshots/01-synthese.png)
+
+- [Open the PBIX report](powerbi/AnalyseVentes.pbix), or use the [editable PBIP project](powerbi/AnalyseVentes.pbip).
+- [Setup, model, measures, and interpretation](powerbi/README.md).
+- [SQL-to-DAX validation results](powerbi/validation.md).
+- [Product analysis preview](powerbi/screenshots/02-produits.png) and [customer analysis preview](powerbi/screenshots/03-clients.png).
+
+The report reads the existing Gold views in Import mode. It retains sales with missing order dates in the unfiltered total and flags this limitation. Annual growth is shown only for comparable years; the source does not specify a currency.
 
 ## Architecture
 
@@ -25,7 +36,7 @@ flowchart LR
     B --> S[Silver: cleaned tables]
     S --> G[Gold: customer, product and sales views]
     G --> A[SQL analysis]
-    G -. planned .-> P[Power BI reporting]
+    G --> P[Power BI: French sales report]
 ```
 
 | Layer | Responsibility | Implementation |
@@ -96,6 +107,15 @@ sql-data-warehouse-project/
 │   ├── data_flow.drawio
 │   ├── data_integration.drawio
 │   └── data_model.drawio
+├── powerbi/
+│   ├── AnalyseVentes.pbix
+│   ├── AnalyseVentes.pbip
+│   ├── AnalyseVentes.Report/
+│   ├── AnalyseVentes.SemanticModel/
+│   ├── screenshots/
+│   ├── mesures.dax
+│   ├── README.md
+│   └── validation.md
 ├── scripts/
 │   ├── init_database.sql
 │   ├── bronze/
@@ -167,7 +187,7 @@ The repository includes inspection queries for customer keys, text formatting, p
 
 The scripts are intended for a learning and portfolio environment. Loads are full refreshes and are not atomic across all tables. Bronze prints caught errors without rethrowing them, so a completed procedure call alone is not proof of a successful load. There is no automated scheduling, incremental loading, or persistent dimension-key management.
 
-Execution results should be recorded after running the pipeline in SQL Server; the presence of validation scripts alone does not establish that every check passes.
+The loaded Power BI model has been checked against SQL: revenue of 29,356,250, 27,659 distinct orders, and 60,423 units match exactly. There are 19 sales rows without an order date, representing revenue of 4,992. See [report validation](powerbi/validation.md). These checks do not establish that every Bronze and Silver cleansing rule passes.
 
 ## Next improvements
 
@@ -176,7 +196,7 @@ Execution results should be recorded after running the pipeline in SQL Server; t
 - Record source-to-target row counts, test results, and load durations.
 - Improve date conversion, error propagation, and numeric precision handling.
 - Add SQL analyses for customer behavior, product performance, and sales trends.
-- Build a Power BI report with a date dimension and documented measures.
+- Extend Power BI with customer cohort analysis and documented business findings.
 
 ## Author and acknowledgments
 

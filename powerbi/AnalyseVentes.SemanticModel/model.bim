@@ -1,0 +1,646 @@
+{
+  "compatibilityLevel": 1606,
+  "model": {
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"Clients\",\"Produits\",\"Ventes\"]"
+      },
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "fr-FR",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "relationships": [
+      {
+        "name": "6091392b-94b4-4327-8575-5d644dcfef5e",
+        "fromColumn": "Clé client",
+        "fromTable": "Ventes",
+        "toColumn": "Clé client",
+        "toTable": "Clients"
+      },
+      {
+        "name": "9a66e975-0510-42bd-b76a-75725019955d",
+        "fromColumn": "Clé produit",
+        "fromTable": "Ventes",
+        "toColumn": "Clé produit",
+        "toTable": "Produits"
+      },
+      {
+        "name": "28bc6783-8efd-43fa-a055-013297997397",
+        "fromColumn": "Date commande",
+        "fromTable": "Ventes",
+        "toColumn": "Date",
+        "toTable": "Calendrier"
+      },
+      {
+        "name": "745ae2d5-bfe4-468f-b1f9-83e378f99c5c",
+        "fromColumn": "Date expédition",
+        "fromTable": "Ventes",
+        "isActive": false,
+        "toColumn": "Date",
+        "toTable": "Calendrier"
+      }
+    ],
+    "sourceQueryCulture": "fr-FR",
+    "tables": [
+      {
+        "name": "Clients",
+        "columns": [
+          {
+            "name": "Clé client",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "010b8648-a92e-4428-85e5-66ce6dad3411",
+            "sourceColumn": "Clé client",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Identifiant client",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "04720078-c5a2-4e5d-ad17-4626058c7d50",
+            "sourceColumn": "Identifiant client",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Numéro client",
+            "dataType": "string",
+            "lineageTag": "7970e754-d572-4d40-aabb-f89106a7272d",
+            "sourceColumn": "Numéro client",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Prénom",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "a612774a-86b9-4b6a-b74f-453d9836c97b",
+            "sourceColumn": "Prénom",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Nom",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "3b10254c-5347-47f1-86e1-1ea545b8f818",
+            "sourceColumn": "Nom",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Pays",
+            "dataType": "string",
+            "lineageTag": "c9e35ae7-e1d6-4bc3-b086-9e816c7da39a",
+            "sourceColumn": "Pays",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Situation familiale",
+            "dataType": "string",
+            "lineageTag": "106eea65-c9fc-4470-aa49-15cce44786cf",
+            "sourceColumn": "Situation familiale",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Genre",
+            "dataType": "string",
+            "lineageTag": "01bb016c-f812-4a5e-88d8-a04ee3cdf742",
+            "sourceColumn": "Genre",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date de naissance",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "isHidden": true,
+            "lineageTag": "2cdd558f-997d-43b1-9180-80634ef312a0",
+            "sourceColumn": "Date de naissance",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date de création",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "isHidden": true,
+            "lineageTag": "93a30e20-4128-4697-9443-2a40e8d9a3e3",
+            "sourceColumn": "Date de création",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Client",
+            "dataType": "string",
+            "lineageTag": "b70f91d5-6798-4b21-9d6f-f7b987f36bb1",
+            "sourceColumn": "Client",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "513460a1-f266-4fb8-8ff0-bbf73e8d33a4",
+        "partitions": [
+          {
+            "name": "Clients",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"DataWeareHouse\"),",
+                "    Gold = Source{[Schema=\"gold\", Item=\"dim_customers\"]}[Data],",
+                "    Renomme = Table.RenameColumns(Gold, {{\"customer_key\", \"Clé client\"}, {\"customer_id\", \"Identifiant client\"}, {\"customer_number\", \"Numéro client\"}, {\"first_name\", \"Prénom\"}, {\"last_name\", \"Nom\"}, {\"country\", \"Pays\"}, {\"marital_status\", \"Situation familiale\"}, {\"gender\", \"Genre\"}, {\"birthdate\", \"Date de naissance\"}, {\"create_date\", \"Date de création\"}}),",
+                "    Enrichi = Table.AddColumn(Renomme, \"Client\", each Text.Trim(Text.Combine({[Prénom], [Nom]}, \" \")), type text),",
+                "    PaysFrancais = Table.TransformColumns(Enrichi, {{\"Pays\", each if _ = \"Germany\" then \"Allemagne\" else if _ = \"United States\" then \"États-Unis\" else if _ = \"United Kingdom\" then \"Royaume-Uni\" else if _ = \"France\" then \"France\" else if _ = \"Australia\" then \"Australie\" else if _ = \"Canada\" then \"Canada\" else if _ = null or _ = \"n/a\" or _ = \"\" then \"Non renseigné\" else _, type text}})",
+                "in",
+                "    PaysFrancais"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Produits",
+        "columns": [
+          {
+            "name": "Clé produit",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "3232e22d-faf5-4421-8519-d2597ab8d81f",
+            "sourceColumn": "Clé produit",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Identifiant produit",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "0264b19e-c6df-4ec8-9c48-7426c3af2b5c",
+            "sourceColumn": "Identifiant produit",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Numéro produit",
+            "dataType": "string",
+            "lineageTag": "d38e5847-cffe-4ca3-b1a1-849bb5601198",
+            "sourceColumn": "Numéro produit",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Produit",
+            "dataType": "string",
+            "lineageTag": "77187bae-0209-48c3-a25b-c644bf63c181",
+            "sourceColumn": "Produit",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Identifiant catégorie",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "8ee42714-54fb-48d4-85c7-0d6b18d1a879",
+            "sourceColumn": "Identifiant catégorie",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Catégorie",
+            "dataType": "string",
+            "lineageTag": "c11b2d36-e330-4245-8970-20d088d23483",
+            "sourceColumn": "Catégorie",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Sous-catégorie",
+            "dataType": "string",
+            "lineageTag": "10b456ff-6b88-4893-ab8b-1497ad375064",
+            "sourceColumn": "Sous-catégorie",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Maintenance",
+            "dataType": "string",
+            "lineageTag": "2ca4d8a5-74ba-4947-a335-d928286f08da",
+            "sourceColumn": "Maintenance",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Gamme",
+            "dataType": "string",
+            "lineageTag": "e1159a77-ebab-464a-a93a-79345eebdaa1",
+            "sourceColumn": "Gamme",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Coût actuel",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "81c7f103-37e7-4de5-b796-f8cdc996d5e2",
+            "sourceColumn": "Coût actuel",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date de début",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "isHidden": true,
+            "lineageTag": "d8e78ffd-c28b-4fbb-b1f2-a5b35e3525f8",
+            "sourceColumn": "Date de début",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "ee38f42a-b606-4348-a28d-368353025ab1",
+        "partitions": [
+          {
+            "name": "Produits",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"DataWeareHouse\"),",
+                "    Gold = Source{[Schema=\"gold\", Item=\"dim_products\"]}[Data],",
+                "    Renomme = Table.RenameColumns(Gold, {{\"produt_key\", \"Clé produit\"}, {\"product_id\", \"Identifiant produit\"}, {\"product_number\", \"Numéro produit\"}, {\"product_name\", \"Produit\"}, {\"category_id\", \"Identifiant catégorie\"}, {\"category\", \"Catégorie\"}, {\"subcategory\", \"Sous-catégorie\"}, {\"maintenance\", \"Maintenance\"}, {\"prroduct_line\", \"Gamme\"}, {\"cost\", \"Coût actuel\"}, {\"start_date\", \"Date de début\"}}),",
+                "    CategoriesFrancaises = Table.TransformColumns(Renomme, {{\"Catégorie\", each if _ = \"Bikes\" then \"Vélos\" else if _ = \"Accessories\" then \"Accessoires\" else if _ = \"Clothing\" then \"Vêtements\" else if _ = \"Components\" then \"Composants\" else if _ = null or _ = \"n/a\" then \"Non renseignée\" else _, type text}})",
+                "in",
+                "    CategoriesFrancaises"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Ventes",
+        "columns": [
+          {
+            "name": "Numéro commande",
+            "dataType": "string",
+            "isHidden": true,
+            "lineageTag": "734fa68f-d62c-46fb-bd1b-118e8560eb23",
+            "sourceColumn": "Numéro commande",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Clé produit",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "88fed847-38a1-48cd-8ee4-01a7f5933775",
+            "sourceColumn": "Clé produit",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Clé client",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "78952afd-ca39-457e-b4a6-63d6a8eafa39",
+            "sourceColumn": "Clé client",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date commande",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "lineageTag": "593b0ad7-fe8e-4a22-89b5-eefdb97ac4c2",
+            "sourceColumn": "Date commande",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date expédition",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "lineageTag": "d57cb5c8-ba65-4374-a933-d222f347f548",
+            "sourceColumn": "Date expédition",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date échéance",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "lineageTag": "c45b61ad-710e-44d8-998d-0c0498285691",
+            "sourceColumn": "Date échéance",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Montant vente",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "2647e485-9936-4a6c-a76e-8236d724e5fe",
+            "sourceColumn": "Montant vente",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Quantité",
+            "dataType": "int64",
+            "isHidden": true,
+            "lineageTag": "80a4c670-8dab-40c6-b1f8-f60b764d376e",
+            "sourceColumn": "Quantité",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Prix unitaire",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "isHidden": true,
+            "lineageTag": "0a74da2c-47b5-4e3a-b954-5870fdc69f1a",
+            "sourceColumn": "Prix unitaire",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "d61546b2-d7d4-4cf5-a943-f64a5ef2f769",
+        "measures": [
+          {
+            "name": "Chiffre d’affaires",
+            "description": "Somme des montants de vente ; devise non précisée par la source.",
+            "displayFolder": "Ventes",
+            "expression": "SUM(Ventes[Montant vente])",
+            "formatString": "#,0.00",
+            "lineageTag": "598248f2-b6a1-494c-abe6-f6bebd4288ab"
+          },
+          {
+            "name": "Commandes",
+            "description": "Nombre de commandes distinctes.",
+            "displayFolder": "Ventes",
+            "expression": "DISTINCTCOUNT(Ventes[Numéro commande])",
+            "formatString": "#,0",
+            "lineageTag": "241f99fe-f2ba-439b-9129-0923a200e5af"
+          },
+          {
+            "name": "Unités vendues",
+            "description": "Somme des quantités vendues.",
+            "displayFolder": "Ventes",
+            "expression": "SUM(Ventes[Quantité])",
+            "formatString": "#,0",
+            "lineageTag": "375bed7c-5cbf-4155-a030-e1965be44ef2"
+          },
+          {
+            "name": "Clients actifs",
+            "description": "Clients ayant au moins une vente dans le contexte sélectionné.",
+            "displayFolder": "Clients",
+            "expression": "DISTINCTCOUNT(Ventes[Clé client])",
+            "formatString": "#,0",
+            "lineageTag": "fd2a82dc-5265-4f34-ae8d-c075e4bb846d"
+          },
+          {
+            "name": "Produits vendus",
+            "description": "Produits avec au moins une vente dans le contexte sélectionné.",
+            "displayFolder": "Produits",
+            "expression": "DISTINCTCOUNT(Ventes[Clé produit])",
+            "formatString": "#,0",
+            "lineageTag": "1bb2035b-1b76-4c07-8d42-21362b107d29"
+          },
+          {
+            "name": "Panier moyen",
+            "description": "Chiffre d’affaires par commande distincte.",
+            "displayFolder": "Ventes",
+            "expression": "DIVIDE([Chiffre d’affaires], [Commandes])",
+            "formatString": "#,0.00",
+            "lineageTag": "57bd8088-a83f-468a-9f2c-68211f437e5e"
+          },
+          {
+            "name": "CA année précédente",
+            "description": "CA sur les dates équivalentes de l’année précédente.",
+            "displayFolder": "Évolution",
+            "expression": "CALCULATE([Chiffre d’affaires], SAMEPERIODLASTYEAR(Calendrier[Date]))",
+            "formatString": "#,0.00",
+            "lineageTag": "7db18fe4-9ae6-4111-b42a-764f4b08932b"
+          },
+          {
+            "name": "Évolution CA %",
+            "description": "Variation annuelle affichée uniquement lorsque les deux années sont comprises entre les années de début et de fin de couverture. Le total multiannuel reste vide.",
+            "displayFolder": "Évolution",
+            "expression": [
+              "VAR Annee = SELECTEDVALUE(Calendrier[Année])",
+              "VAR PremiereDate = CALCULATE(MIN(Ventes[Date commande]), REMOVEFILTERS())",
+              "VAR DerniereDate = CALCULATE(MAX(Ventes[Date commande]), REMOVEFILTERS())",
+              "RETURN IF(NOT ISBLANK(Annee) && Annee > YEAR(PremiereDate) + 1 && Annee < YEAR(DerniereDate), DIVIDE([Chiffre d’affaires] - [CA année précédente], [CA année précédente]), BLANK())"
+            ],
+            "formatString": "0.0%;-0.0%;0.0%",
+            "lineageTag": "64146fe1-1416-435a-a6ab-0b82044e1fcd"
+          },
+          {
+            "name": "CA cumulé annuel",
+            "description": "Cumul depuis le début de l’année dans le contexte courant.",
+            "displayFolder": "Évolution",
+            "expression": "TOTALYTD([Chiffre d’affaires], Calendrier[Date])",
+            "formatString": "#,0.00",
+            "lineageTag": "38166eb4-a5b8-488a-82b7-273a662a9605"
+          },
+          {
+            "name": "Commandes par client",
+            "description": "Fréquence de commande dans la période sélectionnée.",
+            "displayFolder": "Clients",
+            "expression": "DIVIDE([Commandes], [Clients actifs])",
+            "formatString": "0.00",
+            "lineageTag": "73cb3aaa-789e-4d2e-b8bf-7245b14dd524"
+          },
+          {
+            "name": "Clients récurrents",
+            "description": "Clients avec plus d’une commande dans la période sélectionnée.",
+            "displayFolder": "Clients",
+            "expression": "COUNTROWS(FILTER(VALUES(Ventes[Clé client]), CALCULATE([Commandes]) > 1))",
+            "formatString": "#,0",
+            "lineageTag": "b42114f0-c150-4a82-ae20-57290a588e2f"
+          },
+          {
+            "name": "Taux de récurrence",
+            "description": "Proportion des clients actifs avec plusieurs commandes dans la période sélectionnée.",
+            "displayFolder": "Clients",
+            "expression": "DIVIDE([Clients récurrents], [Clients actifs])",
+            "formatString": "0.0%",
+            "lineageTag": "1cce0ccd-bb25-474f-a5f9-c97708887462"
+          },
+          {
+            "name": "CA par client",
+            "description": "Chiffre d’affaires moyen par client actif.",
+            "displayFolder": "Clients",
+            "expression": "DIVIDE([Chiffre d’affaires], [Clients actifs])",
+            "formatString": "#,0.00",
+            "lineageTag": "527e32cb-8b41-48b8-914e-fee19edb3ef0"
+          },
+          {
+            "name": "CA expédié",
+            "description": "CA analysé selon la date d’expédition.",
+            "displayFolder": "Ventes",
+            "expression": "CALCULATE([Chiffre d’affaires], USERELATIONSHIP(Calendrier[Date], Ventes[Date expédition]))",
+            "formatString": "#,0.00",
+            "lineageTag": "c0fd7bda-b533-4bbd-a0ee-ca4cc753318d"
+          },
+          {
+            "name": "Lignes sans date",
+            "description": "Lignes sans date de commande, hors filtre calendrier.",
+            "displayFolder": "Qualité",
+            "expression": "CALCULATE(COUNTROWS(Ventes), REMOVEFILTERS(Calendrier), ISBLANK(Ventes[Date commande]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "CA sans date",
+            "description": "CA inclus dans le total mais non attribuable à une période.",
+            "displayFolder": "Qualité",
+            "expression": "CALCULATE([Chiffre d’affaires], REMOVEFILTERS(Calendrier), ISBLANK(Ventes[Date commande]))",
+            "formatString": "#,0.00"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Ventes",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Sql.Database(\"localhost\\SQLEXPRESS\", \"DataWeareHouse\"),",
+                "    Gold = Source{[Schema=\"gold\", Item=\"fact_sales\"]}[Data],",
+                "    Renomme = Table.RenameColumns(Gold, {{\"order_number\", \"Numéro commande\"}, {\"produt_key\", \"Clé produit\"}, {\"customer_key\", \"Clé client\"}, {\"order_date\", \"Date commande\"}, {\"shipping_date\", \"Date expédition\"}, {\"due_date\", \"Date échéance\"}, {\"sales_amount\", \"Montant vente\"}, {\"quantity\", \"Quantité\"}, {\"price\", \"Prix unitaire\"}})",
+                "in",
+                "    Renomme"
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Calendrier",
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "dd/MM/yyyy",
+            "isKey": true,
+            "isNameInferred": false,
+            "lineageTag": "c45b26e4-5c28-4f14-b4dc-e37289036727",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Année",
+            "dataType": "int64",
+            "isNameInferred": false,
+            "lineageTag": "d0e23a7d-f91f-4980-995a-d8bb22c4aa2a",
+            "sourceColumn": "[Année]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Mois numéro",
+            "dataType": "int64",
+            "isHidden": true,
+            "isNameInferred": false,
+            "lineageTag": "48300c35-e558-40fc-aba6-08fe0c27d014",
+            "sourceColumn": "[Mois numéro]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Mois",
+            "dataType": "string",
+            "isNameInferred": false,
+            "lineageTag": "31157d92-b4d8-4bd9-a529-961c03fabd1e",
+            "sortByColumn": "Mois numéro",
+            "sourceColumn": "[Mois]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Année-mois",
+            "dataType": "string",
+            "isNameInferred": false,
+            "lineageTag": "f15da7a7-5b4d-43d6-a6b2-cbdc27894cdc",
+            "sortByColumn": "Tri année-mois",
+            "sourceColumn": "[Année-mois]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Tri année-mois",
+            "dataType": "int64",
+            "isHidden": true,
+            "isNameInferred": false,
+            "lineageTag": "143c993d-77bb-4031-8db6-fe9c5e0b53c6",
+            "sourceColumn": "[Tri année-mois]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Trimestre",
+            "dataType": "string",
+            "isNameInferred": false,
+            "lineageTag": "4eb55638-8e24-488b-b657-480c1e92b451",
+            "sourceColumn": "[Trimestre]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          }
+        ],
+        "dataCategory": "Time",
+        "lineageTag": "3b29d1f9-6a96-4f32-95f0-0be748afe847",
+        "partitions": [
+          {
+            "name": "Calendrier",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "VAR Debut = MIN(Ventes[Date commande])",
+                "VAR Fin = MAX(Ventes[Date commande])",
+                "RETURN ADDCOLUMNS(CALENDAR(DATE(YEAR(Debut),1,1),DATE(YEAR(Fin),12,31)), \"Année\", YEAR([Date]), \"Mois numéro\", MONTH([Date]), \"Mois\", FORMAT([Date],\"mmmm\",\"fr-FR\"), \"Année-mois\", FORMAT([Date],\"yyyy-MM\"), \"Tri année-mois\", YEAR([Date])*100+MONTH([Date]), \"Trimestre\", \"T\" & FORMAT([Date],\"Q\"))"
+              ],
+              "type": "calculated"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
