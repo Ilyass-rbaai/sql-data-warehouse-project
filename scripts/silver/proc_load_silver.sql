@@ -132,8 +132,8 @@ BEGIN
 		ELSE 'n/a'
 	END cst_marital_status,
 	-- data normalization and hundling nulls in customer gender
-	CASE WHEN UPPER(TRIM(cst_gndr))='M' THEN 'MALE'
-		WHEN UPPER(TRIM(cst_gndr))='F' THEN 'FAMALE'
+	CASE WHEN UPPER(TRIM(cst_gndr))='M' THEN 'Male'
+		WHEN UPPER(TRIM(cst_gndr))='F' THEN 'Female'
 		ELSE 'n/a'
 	END cst_gndr,
 	cst_create_date
@@ -296,5 +296,3 @@ BEGIN
 	PRINT 'Total Loading Duration:'+cast(DATEDIFF(second,@batch_start_time,@batch_end_time) as nvarchar)+'seconds'
 	PRINT '=======================================================';
 END
-
-
