@@ -191,7 +191,6 @@ The loaded Power BI model has been checked against SQL: revenue of 29,356,250, 2
 
 ## Next improvements
 
-- Standardize database and column names, including `produt_key` and `prroduct_line`.
 - Add diagram previews and a data catalog aligned with the actual SQL columns.
 - Record source-to-target row counts, test results, and load durations.
 - Improve date conversion, error propagation, and numeric precision handling.
