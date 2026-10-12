@@ -1,0 +1,22 @@
+# Local database files and backups
+*.mdf
+*.ndf
+*.ldf
+*.bak
+
+# Credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.vs/
+.vscode/
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# diagrams.net recovery files
+*.bkp
+*.dtmp
+~$*
