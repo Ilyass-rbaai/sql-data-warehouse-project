@@ -201,8 +201,6 @@ The loaded Power BI model has been checked against SQL: revenue of 29,356,250, 2
 
 **Ilyass R'baai** — [GitHub profile](https://github.com/Ilyass-rbaai)
 
-[DataWithBaraa/sql-data-warehouse-project](https://github.com/DataWithBaraa/sql-data-warehouse-project).
-
 ## License
 
 This project includes material from the original MIT-licensed tutorial project. See [LICENSE](LICENSE) for the retained license and copyright notice.
